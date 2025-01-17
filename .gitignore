@@ -1,0 +1,15 @@
+
+docker-compose.yml
+
+# Backend
+back/node_modules
+back/dist
+back/.env
+
+# Frontend
+front/node_modules
+front/dist
+front/.env
+front/dist-ssr
+front/*.local
+front/src/vite-env.d.ts

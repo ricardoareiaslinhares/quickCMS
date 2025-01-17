@@ -5,6 +5,8 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+  console.log("HI")
+  console.log(import.meta.env.VITE_FB_projectId);
 
   return (
     <>
@@ -22,7 +24,7 @@ function App() {
           count is {count}
         </button>
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+          Edit <code>src/App.tsx</code> and save to test HMR ou nao 
         </p>
       </div>
       <p className="read-the-docs">

@@ -14,9 +14,11 @@ router.get("/", asyncHandler((req: Request, res: Response) =>
     res.send("QuickCMS Back-end is running;")
 ));
 
-router.post("/auth/login", asyncHandler((req: Request, res: Response) => {
-    const { email, password } = req.body;
-    LoginUseCase(email, password);
+router.get("/auth/login", asyncHandler((req: Request, res: Response) => {
+   const headers = req.headers;
+   console.log(headers.authorization);
+   res.send("Login;");
+   
 }
 ));
 

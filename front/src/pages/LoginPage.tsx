@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { signInWithEmailAndPassword} from 'firebase/auth';
 import { auth } from '../App'
 import { localSave } from '../utils/localStorage';
+import verifyLogin from '../utils/verifyLogin';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -15,6 +16,7 @@ const LoginPage: React.FC = () => {
       const token = await result.user.getIdToken();
       await localSave('AcessToken_QuickCMS', token);
       console.log(token);
+      await verifyLogin()
     } catch (e) {
       setError('Failed to login');
     }

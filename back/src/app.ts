@@ -1,6 +1,7 @@
 import express, {Application} from 'express';
 import { router } from './adapters/routes.js';
 import ErrorHandler from './utils/errors/ErrorHandler.js';
+import cors from 'cors';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -17,6 +18,13 @@ export const auth = getAuth(appFB);
 
 const app: Application = express();
 app.use(express.json());
+const FRONTEND_URL = process.env.FRONTEND_URL
+
+app.use(cors({
+    origin: FRONTEND_URL,
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }));
 
 // Mount the routes
 app.use('', router);

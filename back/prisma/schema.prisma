@@ -1,0 +1,158 @@
+//npx prisma migrate dev --name init
+//npx prisma generate
+//docker exec -it back_qcms bash -c "npx prisma migrate dev --name init && npx prisma generate"
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" 
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id    Int         @id @default(autoincrement())
+  email      String      @unique
+  createdAt  DateTime    @default(now()) @db.Timestamptz
+  updatedAt  DateTime    @updatedAt @db.Timestamptz
+  authors    Author[]
+  categories Category[]
+  tags       Tag[]
+  posts      Post[]
+  imageLinks ImageLink[]
+}
+
+model Author {
+  author_id Int      @id @default(autoincrement())
+  user_id   Int
+  user      User     @relation(fields: [user_id], references: [user_id])
+  name      String
+  imageLink String? // Optional
+  bio       String? // Optional
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
+  posts     Post[]
+}
+
+
+
+
+
+
+model Post {
+  post_id          Int             @id @default(autoincrement())
+  user_id          Int
+  user             User            @relation(fields: [user_id], references: [user_id])
+  slug             String?         @unique
+  title            String
+  body             String
+  description      String?
+  descriptionShort String?
+  author_id        Int
+  author           Author          @relation(fields: [author_id], references: [author_id])
+  status           PostStatus      @default(DRAFT)
+  numbers          PostNumber[]
+  categories       PostCategory[]  // Many-to-Many through PostCategory
+  tags             PostTag[]       // Many-to-Many through PostTag
+  images           PostImage[]     // Many-to-Many through PostImage
+  createdAt        DateTime        @default(now()) @db.Timestamptz
+  updatedAt        DateTime        @updatedAt @db.Timestamptz
+}
+
+model Number {
+  number_id Int      @id @default(autoincrement())
+  post_id   Int
+  posts     PostNumber[]
+  name      String
+  value     Float
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
+}
+
+model Category {
+  category_id      Int             @id @default(autoincrement())
+  user_id          Int
+  user             User            @relation(fields: [user_id], references: [user_id])
+  name             String
+  posts            PostCategory[]  // Many-to-Many through PostCategory
+  createdAt        DateTime        @default(now()) @db.Timestamptz
+  updatedAt        DateTime        @updatedAt @db.Timestamptz
+}
+
+model Tag {
+  tag_id           Int             @id @default(autoincrement())
+  user_id          Int
+  user             User            @relation(fields: [user_id], references: [user_id])
+  name             String
+  posts            PostTag[]       // Many-to-Many through PostTag
+  createdAt        DateTime        @default(now()) @db.Timestamptz
+  updatedAt        DateTime        @updatedAt @db.Timestamptz
+}
+
+model ImageLink {
+  imageLink_id     Int             @id @default(autoincrement())
+  user_id          Int
+  user             User            @relation(fields: [user_id], references: [user_id])
+  name             String
+  link             String
+  posts            PostImage[]     // Many-to-Many through PostImage
+  createdAt        DateTime        @default(now()) @db.Timestamptz
+  updatedAt        DateTime        @updatedAt @db.Timestamptz
+}
+
+model PostNumber {
+  id               Int             @id @default(autoincrement())
+  post_id          Int
+  post             Post            @relation(fields: [post_id], references: [post_id])
+  number_id      Int
+  number         Number        @relation(fields: [number_id], references: [number_id])
+  createdAt        DateTime        @default(now()) @db.Timestamptz
+  updatedAt        DateTime        @updatedAt @db.Timestamptz
+}
+
+// Join table for Post <-> Category
+model PostCategory {
+  id               Int             @id @default(autoincrement())
+  post_id          Int
+  post             Post            @relation(fields: [post_id], references: [post_id])
+  category_id      Int
+  category         Category        @relation(fields: [category_id], references: [category_id])
+  createdAt        DateTime        @default(now()) @db.Timestamptz
+  updatedAt        DateTime        @updatedAt @db.Timestamptz
+}
+
+// Join table for Post <-> Tag
+model PostTag {
+  id               Int             @id @default(autoincrement())
+  post_id          Int
+  post             Post            @relation(fields: [post_id], references: [post_id])
+  tag_id           Int
+  tag              Tag             @relation(fields: [tag_id], references: [tag_id])
+  createdAt        DateTime        @default(now()) @db.Timestamptz
+  updatedAt        DateTime        @updatedAt @db.Timestamptz
+}
+
+// Join table for Post <-> ImageLink
+model PostImage {
+  id               Int             @id @default(autoincrement())
+  post_id          Int
+  post             Post            @relation(fields: [post_id], references: [post_id])
+  imageLink_id     Int
+  imageLink        ImageLink       @relation(fields: [imageLink_id], references: [imageLink_id])
+  createdAt        DateTime        @default(now()) @db.Timestamptz
+  updatedAt        DateTime        @updatedAt @db.Timestamptz
+}
+
+
+enum PostStatus {
+  PUBLISH
+  DISABLE
+  DRAFT
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+  USER
+}

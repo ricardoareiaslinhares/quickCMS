@@ -1,5 +1,7 @@
 import { Router, Request, Response, NextFunction, Errback } from "express";
 import LoginUseCase from "../aplication/use-cases/auth/LoginUseCase.js";
+import validateFirebaseIdToken from "./middleware/verifyToken.js";
+
 
 export const router = Router();
 
@@ -14,13 +16,11 @@ router.get("/", asyncHandler((req: Request, res: Response) =>
     res.send("QuickCMS Back-end is running;")
 ));
 
-router.get("/auth/login", asyncHandler((req: Request, res: Response) => {
+router.get("/auth/login", validateFirebaseIdToken, asyncHandler((req: Request, res: Response, next: NextFunction) => {
    const headers = req.headers;
-   console.log(headers.authorization);
+
    res.send("Login;");
-   
-}
-));
+}));
 
 router.post("/auth/register", asyncHandler((req: Request, res: Response) => 
     res.send("Register;")

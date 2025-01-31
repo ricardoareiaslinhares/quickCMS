@@ -1,6 +1,7 @@
 //npx prisma migrate dev --name init
 //npx prisma generate
 //docker exec -it back_qcms bash -c "npx prisma migrate dev --name init && npx prisma generate"
+//docker exec -it back_qcms bash -c "npx prisma studio"
 generator client {
   provider = "prisma-client-js"
 }

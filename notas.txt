@@ -1,0 +1,66 @@
+services:
+  front_qcms:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    container_name: front_qcms
+    networks:
+      - quickCMS_network
+    volumes:
+      - ./front/src:/app/src
+      - ./front/.env:/app/.env
+     # - /front/node_modules  
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    depends_on:
+      - back_qcms
+    command: ["npm", "run", "dev"]
+
+  # Backend (Node.js API)
+  back_qcms:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    container_name: back_qcms
+    networks:
+      - quickCMS_network
+    volumes:
+      - ./back/src:/app/src
+      - ./back/.env:/app/.env
+      - ./back/prisma:/app/prisma
+    environment:
+      - DATABASE_URL=postgres://rlquickcms:rlquickcms@db_qcms:5434/quickcms
+
+    ports:
+      - "3001:3001"
+      - "5555:5555" 
+    expose:
+      - "3001"
+    depends_on:
+      - db_qcms
+    command: ["npm", "run", "dev"]
+
+  # Database (PostgreSQL)
+  db_qcms:
+    image: postgres:15
+    container_name: db_qcms
+    environment:
+      POSTGRES_USER: rlquickcms
+      POSTGRES_PASSWORD: rlquickcms
+      POSTGRES_DB: quickcms
+      PGPORT: 5434
+    networks:
+      - quickCMS_network
+    volumes:
+      - db_qcms_data:/var/lib/postgresql/data
+    ports:
+      - "5434:5434" 
+
+networks:
+  quickCMS_network:
+    driver: bridge
+
+volumes:
+  db_qcms_data:

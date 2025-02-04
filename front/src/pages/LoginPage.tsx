@@ -6,7 +6,10 @@ import verifyLogin from "../utils/verifyLogin";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-const LoginPage: React.FC = () => {
+interface LoginPageProps {
+  setloggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const LoginPage: React.FC<LoginPageProps> = ({ setloggedIn}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -15,6 +18,11 @@ const LoginPage: React.FC = () => {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       const token = await result.user.getIdToken();
+      if (!token) {
+        setError("Failed to login");
+        return;
+      }
+      setloggedIn(true);
       await localSave("AcessToken_QuickCMS", token);
       console.log(token);
       await verifyLogin();
@@ -24,8 +32,8 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className=" bg-slate-400 flex items-center flex-col gap-10">
-      <h1 className="">Login</h1>
+    <div className="  flex items-center flex-col gap-10">
+      <h1 className="text-3xl">Login</h1>
       <div className="w-[280px] flex gap-4 flex-col">
 
       <Input

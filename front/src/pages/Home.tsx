@@ -1,10 +1,15 @@
+import LoginPage from '@/components/LoginPage'
 import React from 'react'
 
-type Props = {}
+type Props = {
+      setloggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const Home = (props: Props) => {
+const Home = ({setloggedIn}: Props) => {
   return (
-    <div>Home</div>
+    <div>
+        <LoginPage setloggedIn={setloggedIn}/>
+    </div>
   )
 }
 

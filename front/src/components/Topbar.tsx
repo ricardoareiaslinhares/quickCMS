@@ -1,11 +1,18 @@
 import React from 'react'
+import UserProfile from './UserProfile'
+import { User } from '@/entities/Posts'
 
-type Props = {}
+type Props = {
+    user: User
+}
 
-const Topbar = (props: Props) => {
+const TopBar = ({user}: Props) => {
   return (
     <div className='flex flex-1 flex-col bg-red-300 min-h-22 max-h-26 '>
-        <div className='bg-red-500 min-h-11'>Topbar</div>
+        <div className='bg-red-500 min-h-11'>
+            <div>left</div>
+            <UserProfile user={user}/>
+        </div>
         <div className=' flex flex-1 flex-row justify-between px-3'>
             <div>1</div>
             <div>2</div>
@@ -16,4 +23,4 @@ const Topbar = (props: Props) => {
   )
 }
 
-export default Topbar
+export default TopBar

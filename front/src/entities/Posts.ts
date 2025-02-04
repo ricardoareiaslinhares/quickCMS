@@ -13,6 +13,7 @@ export enum PostStatus {
   export interface User {
     user_id: number;
     email: string;
+    name: string;
     createdAt: Date;
     updatedAt: Date;
     authors: Author[];

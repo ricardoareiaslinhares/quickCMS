@@ -54,7 +54,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setloggedIn}) => {
 
       </div>
       <Button onClick={handleLogin}>Login</Button>
-      <Button onClick={() => navigate("/dashboard")}>Navigate dash</Button>
+
 
       {error && <div>{error}</div>}
     </div>

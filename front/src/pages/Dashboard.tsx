@@ -1,3 +1,4 @@
+import Topbar from '@/components/Topbar'
 import React from 'react'
 
 type Props = {}
@@ -7,7 +8,7 @@ const Dashboard = () => {
     <div className='flex flex-1 flex-row min-h-screen'>
         <div className='min-w-[220px] bg-slate-400'>Sidepanel</div>
         <div className='flex-1 flex-col'>
-            <div className=' bg-red-300 min-h-11 max-h-32'>topbar</div>
+            <Topbar/>
             <div>Content dashboard</div>
         </div>
     </div>

@@ -5,6 +5,7 @@ import { localSave } from "../utils/localStorage";
 import verifyLogin from "../utils/verifyLogin";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface LoginPageProps {
   setloggedIn: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,6 +14,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setloggedIn}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate(); 
 
   const handleLogin = async (): Promise<void> => {
     try {
@@ -25,6 +27,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setloggedIn}) => {
       setloggedIn(true);
       await localSave("AcessToken_QuickCMS", token);
       console.log(token);
+      navigate("/dashboard");
       await verifyLogin();
     } catch (e) {
       setError("Failed to login");
@@ -51,6 +54,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setloggedIn}) => {
 
       </div>
       <Button onClick={handleLogin}>Login</Button>
+      <Button onClick={() => navigate("/dashboard")}>Navigate dash</Button>
 
       {error && <div>{error}</div>}
     </div>

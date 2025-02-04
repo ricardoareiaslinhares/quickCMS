@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Dashboard from './pages/Dashboard'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
+import { log } from 'console';
 
 
 
@@ -25,19 +26,20 @@ const PrivateRoute = ({ children, loggedIn }: PrivateRouteProps) => {
 
 function App() {
   const [loggedIn, setloggedIn] = useState(false);
+  console.log("loggedIn", loggedIn);
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Home setloggedIn={setloggedIn} />} />
         <Route 
-          path="/dashboard" 
+          path="/" 
           element={
             <PrivateRoute loggedIn={loggedIn}>
                 <Dashboard />
             </PrivateRoute>
           } 
         />
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

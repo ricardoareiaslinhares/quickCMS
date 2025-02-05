@@ -20,7 +20,7 @@ export enum PostStatus {
     categories: Category[];
     tags: Tag[];
     posts: Post[];
-    imageLinks: ImageLink[];
+    imageLinks?: ImageLink[];
   }
   
   export interface Author {
